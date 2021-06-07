@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" baseProfile="tiny" width="256.5" height="580.5" viewBox="-0.75 -0.75 9.5 21.5" fill="none" stroke="#000000" stroke-linejoin="round" stroke-linecap="round" stroke-width="0.5">
+    <title>12378. animal,beast</title>
+    <desc>https://www.xelify.se/blissdictionary</desc>
+    <rect x="-0.75" y="-0.75" width="100%" height="100%" stroke="none" fill="#ffffff"/>
+<!--    <path d="M0,12  H8  M0,16  L2,12   M2,12  L4,16   M4,16   L6,12   M6,12   L8,16"></path> orig:: animal  y - 9-->
+    <path d="M0,3       H8  M0,7   L2,3    M2,3   L4,7    M4,7    L6,3    M6,3    L8,7"></path>
+
+    <!--    <path d="M0,10  V14   M2,10   L4,12   M2,14    L4,12"></path>   orig   FROM   x + 3-->
+    <path         d="M3,10  V14   M5,10   L7,12   M5,14    L7,12"></path>
+
+
+</svg>

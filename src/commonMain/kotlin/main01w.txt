@@ -1,0 +1,569 @@
+import com.soywiz.korge.*
+import com.soywiz.korge.input.onClick
+import com.soywiz.korge.input.onOver
+import com.soywiz.korge.view.*
+import com.soywiz.korim.bitmap.NativeImage
+import com.soywiz.korim.bitmap.context2d
+import com.soywiz.korim.color.Colors
+import com.soywiz.korim.color.Colors.BLACK
+import com.soywiz.korim.font.BitmapFont
+import com.soywiz.korim.font.readBitmapFont
+import com.soywiz.korio.file.std.resourcesVfs
+import com.soywiz.korma.geom.vector.LineCap
+import com.soywiz.korma.geom.vector.roundRect
+import com.soywiz.korui.layout.MathEx.max
+import kotlin.math.roundToInt
+import kotlin.properties.Delegates
+
+var uiFont: BitmapFont by Delegates.notNull()
+
+
+//Keyboard MODES
+enum class KeyboardMODES {ADULT_DEMONSTRATE, ADULT_EXPLORE, ADULT_USE_MONTESSORI, CHILD_TEMPLATED, FULL_MONTESSORI, CARTOUCHE, PLAIN_BLISS}
+
+
+//The "Symbols Library", the source of all information about a Symbol, including (as is) realtime
+//Statistical information as will be required for Symbol Set Selections
+val symbolPaths    = SymbolPaths()
+
+var gLSentenceBufferOnPANEL = SentenceBufferOnPANEL( Document() )
+
+//These are the Counters for each Panel
+private var gColN       = 0;private var gRowN            = 0  //G)roup Codes
+private var sColN       = 0;private var sRowN            = 0  //S)ymbol Keys
+private var gLKeyColN   = 0;private var gLKeyRowN        = 0
+
+private var gLsentencePanelHt= 0
+var gLnSentences= 0;
+
+
+private const val rowOStoSentencePanel =  6   //Offset in Rows to the Sentence Panel
+private const val xSentencePanelOS     = 20   //Pixels (Minimum Left Margin)
+private const val pixOStoFirstSymbol   = 50
+
+const val XCOMP     =  45
+const val YCOMP     = -50
+
+//These are variable, dynamic with each row/col
+private var xComp   = XCOMP
+private var yComp   = YCOMP
+
+//KEYBOARD SENTENCE CONSTANTS
+private val StndKeyW = 93   //StndKeyW+10
+private val StndKeyH = 83
+private val LangKeyW = 95
+
+
+private val MaxCOL    = 18
+private val BegSCOL   = 13  //Begin Symbols Panel ColN
+private val BegKeyCOL = 1
+private val BegKeyROW = 1
+
+var KeyXLoc = 0.0;var KeyYLoc = 0.0   //     var ySLoc = 0.0
+
+private val WIDTH = 1920
+
+const val keyMargin      = 8
+private const val keyWidthMargin = 16
+private const val keyDim         = 80 // square box size
+private const val verbDiameter   = 110 //####
+private const val gLkeyRad    = 8
+
+
+
+class SymbolNmSET(symbolNm: String = "NULL.NULL.NULL") {
+	val eleAr   = symbolNm.split(".")
+	val SG      = eleAr[0].trim();
+	val GC      = eleAr[1].trim();
+	val SYM     = eleAr[2].trim();
+	var punct   = setPunctuation(SYM)
+	var cmmnd   = setCommand(SYM)
+
+	fun isLanguage() = (SG == "LANGUAGE") || (SG == "GROUPS" && GC == "LANGUAGE")
+	fun isNoun()     = !isLanguage()
+
+	val fullKey  = "$SG.$GC.$SYM"  //TODO!!  FROM REC  REPLACE WITH KeyForm OR replace keyForm() ???
+	val groupKey = "GROUPS.$SG.$GC"  //CAREFUL WITH THIS!!!  - FROM REC
+
+	var symShape = MontiShapes.ERROR
+
+	//todo - to be removed
+//	var keyHigh2          = 0
+
+	var keyRadiusX       = 0.0
+	var keyRadiusY       = 0.0
+	var fColor           = BLACK;
+	var sColor           = BLACK;
+	val isStopper        = symbolPaths.isStopper(fullKey)
+	var endSymbol   	 = symbolPaths.getSymbolByKeys(fullKey)
+
+
+	//Montisorri pre-sets, defaults
+	val symbolMargin     = Dimens.symbolMargin
+	var symbolHeight     = keyDim
+	val symbolSize       = getWidthHeightFromViewBoxGK(endSymbol)
+	var aspectRatio      = if (symbolSize.w > symbolSize.h) symbolSize.w / symbolSize.h else 1.0
+	val symbolWidth      = if ( isNoun() ) ((symbolHeight* aspectRatio) * (1 + Dimens.superGroupWidth)).toInt() else (symbolHeight * aspectRatio).toInt()
+
+	fun setPunctuation(SYM: String) : PUNCTUATION {
+		return when( SYM ) {
+			"Space"          -> PUNCTUATION.SPACE
+			"Comma"          -> PUNCTUATION.COMMA
+			"Ellipse"        -> PUNCTUATION.ELLIPSE
+			"ExclamationMark"-> PUNCTUATION.EOS
+			"QuestionMark"   -> PUNCTUATION.EOS
+			"Period"         -> PUNCTUATION.EOS
+			//Note:: Following invisible characters but appended as placeholder to determine the symbol flow.
+			"EndOfParagraph" -> PUNCTUATION.EOA  //A)bsatz == Paragraph
+			"EndOfPage"      -> PUNCTUATION.EOP   //
+			"EndOfDocument"  -> PUNCTUATION.EOD   //LIST (future: Save?) document to console in LongForm (readable in:  document.addSymbol(PERSON().PETS().Cat())   format)
+			else             -> PUNCTUATION.ERR
+		}
+	}
+
+	fun setCommand(SYM: String) : COMMANDS {
+		return when( SYM ) {
+			"Backspace"      -> COMMANDS.BS
+			"ListToConsole1" -> COMMANDS.LTC1
+			"ListToConsole2" -> COMMANDS.LTC2
+			"ReadFile"       -> COMMANDS.RF     //Currently Simulates reading of a file...
+			"NewBuffer"      -> COMMANDS.NEWBUF //TEMP, Explicit Buffer Control - for development only!
+			"UpArrowSentence"-> COMMANDS.SEN_UP    //Up Arrow - Sentence
+			"DnArrowSentence"-> COMMANDS.SEN_DN    //Down Arrow - Sentence
+			"ClearAll"       -> COMMANDS.CLRALL //Clear all -
+			else             -> COMMANDS.ERR
+		}
+	}
+
+	fun setSymbol() {
+			if( isLanguage() ) {
+				fColor  = COLORS.lang(GC)
+				sColor  = BLACK
+
+				//NOUN,  ARTICLE,  ADVERB, VERB, ADJECTIVE,  PREPOSITION, PRONOUN, CONJUNCTION, INTERJECTION, EMOJI,  PUNCTUATION
+
+				when (GC) {
+					"PRONOUNS"     -> {symbolHeight = keyDim - 30;symShape = MontiShapes.PRONOUN}
+					"ARTICLES"     -> {symbolHeight = keyDim - 25;symShape = MontiShapes.ARTICLE}
+					"ADVERBS"      -> {symbolHeight = 76;keyRadiusX = 36.0;symShape = MontiShapes.ADVERB}
+					"VERBS"        -> {symbolHeight = verbDiameter;keyRadiusX= verbDiameter/2.0-4;symShape = MontiShapes.VERB}
+					"ADJECTIVES"   -> {symbolHeight = keyDim - 10;symShape = MontiShapes.ADJECTIVE}
+					"PREPOSITIONS" -> {symbolHeight = 52;keyRadiusX = 65.0;keyRadiusY = 27.0;symShape = MontiShapes.PREPOSITION}
+					"CONJUNCTIONS" -> {symbolHeight = keyDim - 30;symShape = MontiShapes.CONJUNCTION}
+					"INTERJECTIONS"-> {symbolHeight = keyDim - 30;symShape = MontiShapes.INTERJECTION}
+					"EMOJIS"       -> {symbolHeight = 80;keyRadiusX = 40.0;symShape = MontiShapes.EMOJI}
+					"PUNCTUATION"  -> {symbolHeight = 80;symShape = MontiShapes.PUNCTUATION}
+				}//when
+			} else { //CARTOUCHE!
+				val superGroupNAME = SG
+				symShape = MontiShapes.NOUN
+				sColor   = COLORS.stroke( superGroupNAME );
+				fColor   = if (endSymbol.hD.fillColor==null) COLORS.fill( superGroupNAME ) else endSymbol.hD.fillColor!!
+ 				symbolHeight = keyDim
+			}
+	} //End_of_Function( setSymbol() )
+
+	fun docForm()             = "$SG().$GC().$SYM()"
+	fun keyLong()             = "$SG.$GC. <<$SYM>>\t\t  punct: ${punct},  cmmnd: ${cmmnd}"
+	fun shortForm()           = "$SYM"
+	fun peekForm()            = "$SYM,  (${SG.toLowerCase()}.${GC.toLowerCase()})"
+	override fun toString()   = "symbolNmSET  SG: $SG, GC: $GC, SYM: $SYM, Punct: ${punct}, Cmmnd: ${cmmnd}"
+	fun docFormat()           = "\t\tdocument.addSymbol(${docForm()})"
+
+	fun isPunct()             = (punct != PUNCTUATION.ERR &&  punct != PUNCTUATION.ELLIPSE && punct != PUNCTUATION.SPACE)
+	fun isCmmnd()             = (cmmnd != COMMANDS.ERR)
+	fun isSymbol()            = (!isCmmnd() && !isPunct())
+	fun isClickable()         = (SYM != "BLANK")
+
+	init {
+		setSymbol()
+	}
+}//END_OF_CLASS( SymbolNmSET )
+
+
+fun keyName(symClass: Symbol) : String {  //From class name, Avoids using "reflection" feature
+	var strName  = symClass.toString().replace("SymbolPaths$", "").trim()
+	var eleAr    = strName.split("$")
+	try {strName = "${eleAr[0]}.${eleAr[1]}.${eleAr[2].split("@")[0]}"} catch (e: IndexOutOfBoundsException) {return ""}
+	return strName
+}
+
+fun frame(width: Double, height: Double) : NativeImage {  //Special
+	return NativeImage(width.toInt(), height.toInt()).context2d {
+		lineWidth = 4.0
+		lineCap   = LineCap.ROUND
+		stroke(COLORS.kbFrame()) {
+			roundRect(10, 10, (width-16).toInt(), (height-16).toInt(), 30)
+		}
+	}
+}//End of Function(Frame )
+
+//Used to position the GROUP Keys
+data class ColNRowN(var colN: Int, var rowN: Int)
+class ColRow() {
+	var nW = 1;	var nA = 1;	var nP = 1;	var nS = 1;	var nC = 1;	var nL = 0;
+	fun get(fCh: Char): ColNRowN {
+		return when (fCh) {
+			'W' -> ColNRowN(1, ++nW)
+			'A' -> ColNRowN(3, ++nA)
+			'P' -> ColNRowN(5, ++nP)
+			'S' -> ColNRowN(7, ++nS)
+			'C' -> ColNRowN(9, ++nC)
+			'L' -> ColNRowN(++nL, 1)
+			else -> ColNRowN(0, 0)
+		}
+	}
+} //END_OF_CLASS( ColNRowN() )
+
+
+
+//=====================================================================================================================
+
+suspend fun main() = Korge(width = WIDTH, height = 1360, bgcolor = Colors["#111111"]) {  //height was 1080,  Sceptre monitor 1360 =^ 7 sentences, 1080 =^ 4 sentences
+	uiFont                  = resourcesVfs["fonts/uifont.fnt"].readBitmapFont()
+	val document            = Document()
+	gLSentenceBufferOnPANEL = SentenceBufferOnPANEL(document)
+	val nSymbols            = symbolPaths.nSymbols()
+	val sentencePANELwidth  = WIDTH - 10  //Todo - this is an estimation
+
+	var hooverLine : Text?  = null
+
+	println("nSymbols Total = $nSymbols")  //This is not complete yet [Adjective, Verbs...]
+	val colRow       = ColRow()
+
+	gLKeyColN        = BegKeyCOL - 1;gLKeyRowN = BegKeyROW
+
+	//BUILD KEYBOARD FRAME(S)  -  Extra space in y-axis to go to expanding the SentencePANEL
+	val outWd = width - 5;val outHt = height - 5;
+	val kbOutContainer = container {val kbOutFrame = frame(outWd, outHt);image(kbOutFrame).xy(((width - outWd) / 2).toInt(), ((height - outHt) / 2).toInt())}
+	val grpWd = outWd * 0.64;val grpHt = StndKeyH * 7.4 + 10
+
+	val kbGroupFrame = container {val frame = frame(grpWd, grpHt);image(frame).xy( 10, 10)} //Group Frame
+	val symWd = outWd - grpWd - 11;val symHt = grpHt
+	val kbSymbolFrame  = container {val frame = frame(symWd, symHt);image(frame).xy(grpWd.toInt(), 10)} //Symbols
+
+	println("P1:  width = $width, height = $height, symHt == grpHt = $symHt")
+	val senWd = outWd - 18;val senHt = height - grpHt - 12;val yLoc  = grpHt
+	println("P2:  width = $width, height = $height, senHt = $senHt, yLoc = $yLoc")
+	//P1:  width = 1920.0, height = 1080.0, symHt == grpHt = 624.2
+	//P2:  width = 1920.0, height = 1080.0, senHt = 443.8, yLoc = 624.2 nSentences = 7  (in Window to my 7 Sceptre Screen Size)
+
+	gLsentencePanelHt = senHt.roundToInt()
+	val sentencePanelOS = grpHt.toInt() - 85
+	gLnSentences      = (gLsentencePanelHt / verbDiameter)
+	println("P2:  width = $width, height = $height, senHt = $senHt, yLoc = $yLoc,  gLnSentences = $gLnSentences  (in Window)")
+
+	val kbSentenceFrame = container {val frame = frame(senWd, senHt);image(frame).xy(10.0, yLoc)} //Sentences
+	fun clearSYMBOLpanel() {solidRect( symWd-52, symHt-45, Colors["#111111"]).xy(grpWd.toInt() + 18, 30)}
+	fun clearSENTENCEpanel() {solidRect( senWd-42, senHt-25, Colors["#111111"]).xy(32, grpHt.toInt() + 16)}
+
+	//PATCH#4 - toward a Peek window on hoover.
+//	val sGroupsFrame = roundRect( sgFrameWidth,
+//		subFrameHeight, Dimens.frameRx,
+//		stroke = COLORS.kbFrame, strokeThickness = Dimens.frameStrokeThickness,
+//		fill = Colors.TRANSPARENT_BLACK).xy(Dimens.frameMargin*2, Dimens.frameMargin*2)
+
+	//=================================================================================================================
+
+	fun hooverPeek(symbolNmSET: SymbolNmSET) {
+		if (hooverLine != null) hooverLine.setText("                                                      ")
+		hooverLine = text(symbolNmSET.peekForm(), 22.0, Colors.WHITE, uiFont).xy(symWd - 400, symHt - 60).alignRightToRightOf(kbGroupFrame, 30.0)
+	}
+
+
+	fun showActiveSymbolInSentencePANEL(curXLoc: Double, curYLoc: Double, symbolNmSET: SymbolNmSET) {
+		//println("\t>showActiveSymbol() curXLoc = $curXLoc,curYLoc = $curYLoc,  Word: ${symbolKeyREC.SYM}")
+
+		val montessoriView = getMontessoriView(symbolNmSET, symbol = symbolPaths.getSymbolByKeys(symbolNmSET.fullKey), symbolHeight = Dimens.keyHeight).xy(curXLoc, curYLoc)
+
+		montessoriView.onOver {	hooverPeek(symbolNmSET)	}
+
+	}//End_of_Function( showActiveSymbolInSentencePANEL() )
+
+
+	fun processKeyHitNEW(symbolNmSET: SymbolNmSET) {
+		println("\tprocessKeyHitNEW(),  symbolNmSET: ${symbolNmSET.fullKey}")
+
+		//document.allKeys( symbolNmSET ) //#####
+		//clearSENTENCEpanel()   //TODO - ONLY CLEAR IF A CHANGE TO ACTIVE SENTENCE  #####
+
+		//NEW IMPROVED WAY!
+		val sentenceBufferAr = gLSentenceBufferOnPANEL.getPanelBuffer()    // MutableList<Sentence>  of  mutableListOf<SymbolNmSET>()
+
+		println("===============================================================")
+		println("SENTENCES LOADED on SentenceBufferOnPANEL()")
+		println("===============================================================")
+		for (sentence in sentenceBufferAr) println("\t\t${sentence.sentenceN}). ${sentence.fmtPlain()}")
+		println("===============================================================")
+
+		if ( sentenceBufferAr.size == 6) {
+			clearSENTENCEpanel()
+
+			KeyYLoc     = sentencePanelOS.toDouble()      //((rowOStoSentencePanel+0.5) * StndKeyH + YCOMP).toDouble()
+
+			for ((rowN, sentence) in sentenceBufferAr.withIndex()) {
+				KeyXLoc  = (sentencePANELwidth - sentence.accumKeyWidths) / 2.0
+				KeyYLoc += sentence.maxHeight
+
+				var curXLoc = KeyXLoc
+
+				for (symbolNmSET in sentence.symbolList) {
+					with(symbolNmSET) {
+
+						val curYLoc = KeyYLoc + (verbDiameter - symbolHeight) * 0.60   //todo: VerbHEIGHT to become a global?
+
+						showActiveSymbolInSentencePANEL(curXLoc, curYLoc, this)//%%%
+
+						//curXLoc += keyWide2 + keyMargin
+
+						curXLoc += symbolWidth + symbolMargin
+
+					}
+				}
+			}
+
+		} //Buffer copy is loaded...
+
+	}// End_of_Function( processKeyHitNEW() )
+
+
+	fun processKeyHit(symbolNmSETIn: SymbolNmSET) {
+		println("\tprocessKeyHit(),  symbolNmSET: ${symbolNmSETIn.fullKey}")
+
+		//if ((gLSentenceBufferOnPANEL.nSentence() > 0) && gLSentenceBufferOnPANEL.noChangeMade)
+
+		document.allKeys( symbolNmSETIn ) //#####
+
+		var accumKeyWidths = 0.0
+		var maxHeight      = 0
+
+		clearSENTENCEpanel()   //TODO - ONLY CLEAR IF A CHANGE TO ACTIVE SENTENCE  #####
+
+		val symbolNmSETAr   = document.getActiveSentence() //#####
+
+		//PREPROCESSING FOR ACCUMULATED LENGTH, MAXHEIGHT
+		val SymbolNmSETAr = mutableListOf<SymbolNmSET>()
+		for (symbolNmSET in symbolNmSETAr) {
+			SymbolNmSETAr.add(symbolNmSET)
+			with(symbolNmSET) {
+
+				//accumKeyWidths += keyWide2 + (keyMargin * 1.5)
+
+				accumKeyWidths += symbolWidth + symbolMargin
+
+				maxHeight       = max(maxHeight, symbolHeight)
+			}
+		}
+
+		KeyXLoc     = (sentencePANELwidth - accumKeyWidths) / 2.0
+		KeyYLoc     = ((rowOStoSentencePanel+0.5) * StndKeyH + YCOMP).toDouble()
+
+		var curXLoc = KeyXLoc
+
+//		for (SymbolNmSET in SymbolNmSETAr) {
+//			with(SymbolNmSET) {
+//				val curYLoc = KeyYLoc + (verbDiameter - keyHigh) * 0.60   //todo: VerbHEIGHT to become a global?
+//				showActiveSymbolInSentencePANEL(curXLoc, curYLoc, this)//%%%
+//				curXLoc += keyWide + keyMargin
+//			}
+//		}
+
+		processKeyHitNEW(symbolNmSETIn)
+
+	}// End_of_Function( processKeyHit() )
+
+
+	fun showKeysInSymbolsPANEL(superGroupNAME: String, groupCodeNAME: String) {
+		println(">showKeysInSymbolsPANEL(), superGroupNAME = $superGroupNAME, groupCodeNAME = $groupCodeNAME")
+		var fColor = BLACK;var sColor = BLACK;
+
+		clearSYMBOLpanel()
+
+		val symbolKeyAr = symbolPaths.symbolKeysBySGGC(superGroupNAME, groupCodeNAME)
+
+		sColN = BegSCOL;sRowN = 1
+
+		for (fullSymbolName in symbolKeyAr) {
+			val symbolNmSET = SymbolNmSET(fullSymbolName)
+			val endSymbol   = symbolNmSET.endSymbol
+			val isStopper   = symbolNmSET.isStopper
+			val activeVB    = endSymbol.vB
+			val aspectRatio = if (activeVB.x1 > activeVB.y1) activeVB.x1 / activeVB.y1 else 1.0
+			val subKeyWidth = (keyDim * aspectRatio + keyWidthMargin).toInt()
+
+			KeyXLoc         = (sColN * StndKeyW + xComp).toDouble()
+			KeyYLoc         = (sRowN * StndKeyH + yComp).toDouble()
+
+			if (symbolNmSET.isLanguage()) {
+				fColor  = COLORS.lang(symbolNmSET.GC)
+				sColor  = BLACK
+			}  else {
+				sColor  = COLORS.stroke( superGroupNAME );
+				fColor  = if (endSymbol.hD.fillColor==null) COLORS.fill( superGroupNAME ) else endSymbol.hD.fillColor!!
+			}
+
+			if (symbolNmSET.isClickable()) {//Note:  allowing for BLANK Keys (functioning as Spacers)
+				val subKey      = roundRect(subKeyWidth, keyDim,  gLkeyRad, gLkeyRad, fill=fColor, stroke=sColor, strokeThickness=4.0).xy(KeyXLoc, KeyYLoc)
+				val keySymbol   = renderSymbol(keyDim, endSymbol, strokeColor=sColor).centerXOn(subKey).alignBottomToBottomOf(subKey)
+
+				subKey.onClick { processKeyHit(symbolNmSET) }
+				keySymbol.onClick { processKeyHit(symbolNmSET) }
+
+				subKey.onOver    { hooverPeek(symbolNmSET) }
+				keySymbol.onOver { hooverPeek(symbolNmSET) }
+
+			}
+
+			sColN += 1
+			if (sColN > MaxCOL || isStopper) {sRowN += 1;sColN = BegSCOL}
+		}
+
+	} //End_of_Function( showKeysInSymbolsPANEL )
+
+
+	//=======================================DISPLAY  GROUP KEYS========================================================
+
+	for (SG in symbolPaths.superGroups()) {
+		val superGroupNAME   = SG.toString()
+		val groupSymbolKeyAr = symbolPaths.groupKeysBySG(superGroupNAME)
+		var fColor = BLACK;var sColor = BLACK;
+
+		println("Where superGroupNAME = $superGroupNAME, groupSymbolAr = $groupSymbolKeyAr")
+
+		for (groupSymbolKey in groupSymbolKeyAr) {
+			val groupSymbol     = symbolPaths.getSymbolByKeys(groupSymbolKey)
+			val groupSymbolNAME = symbolPaths.lastKeySYMBOLNAME() //NOTE - 3RD KEY... WITH GROUPS AS PLACEHOLDER
+
+			//TODO!!  MAKE THESE NAMES CLEARER... What is a CLASS and what is the NAME?
+			//println("groupSymbol = $groupSymbol") //This is the CLASS Name ... that toString looks like: SymbolPaths$GROUPS$LANGUAGE$CONJUNCTIONS@44769b4e
+			println("\tgroupSymbolKey = $groupSymbolKey,  groupSymbolNAME = $groupSymbolNAME")
+			val symbolNmSET  = SymbolNmSET(groupSymbolKey)
+			val isLanguage   =  (symbolNmSET.SG == "LANGUAGE") || (symbolNmSET.SG == "GROUPS" && symbolNmSET.GC == "LANGUAGE")
+
+			val rCN          = colRow.get(superGroupNAME[0])
+			val keyW         = if (rCN.rowN == 1) LangKeyW else StndKeyW
+			val keyComp      = if (rCN.rowN == 1) -30 else 20
+			KeyXLoc          = (rCN.colN * keyW  + XCOMP + keyComp).toDouble()
+			KeyYLoc          = (rCN.rowN * StndKeyH + YCOMP).toDouble()
+
+			val activeVB     = groupSymbol.vB
+			val aspectRatio  = if (activeVB.x1 > activeVB.y1) activeVB.x1 / activeVB.y1 else 1.0
+			val subKeyWidth  = (keyDim * aspectRatio + keyWidthMargin).toInt()
+
+			if (isLanguage) {
+				sColor  = BLACK
+				fColor  = COLORS.lang(groupSymbolNAME)
+			} else {
+				sColor  = COLORS.stroke(superGroupNAME)
+				fColor  = COLORS.fill(superGroupNAME)
+			}
+
+			val subKey       = roundRect(subKeyWidth, keyDim, gLkeyRad, gLkeyRad, fill=fColor, stroke=sColor,strokeThickness=4.0).xy(KeyXLoc, KeyYLoc)
+			val subSymbol    = renderSymbol(keyDim, groupSymbol, strokeColor = sColor).centerXOn(subKey).alignBottomToBottomOf(subKey)
+
+			subKey.onClick    { showKeysInSymbolsPANEL(superGroupNAME, groupSymbolNAME) }  //symbolNmRec.fullKey()
+			subSymbol.onClick { showKeysInSymbolsPANEL(superGroupNAME, groupSymbolNAME) }  //symbolNmRec.fullKey()
+
+			subKey.onOver     {	hooverPeek(symbolNmSET)	}
+			subSymbol.onClick {	hooverPeek(symbolNmSET)	}
+		}
+
+	}//End_of_Enclosure:: Build SuperGroups  GK Version
+
+} //End_of_Function( main() )
+
+
+
+
+/*
+class SymbolNmSET(symbolNm: String = "NULL.NULL.NULL") {
+	val eleAr   = symbolNm.split(".")
+	val SG      = eleAr[0].trim();
+	val GC      = eleAr[1].trim();
+	val SYM     = eleAr[2].trim();
+	var punct   = setPunctuation(SYM)
+	var cmmnd   = setCommand(SYM)
+
+	val fullKey  = "$SG.$GC.$SYM"  //TODO!!  FROM REC  REPLACE WITH KeyForm OR replace keyForm() ???
+	val groupKey = "GROUPS.$SG.$GC"  //CAREFUL WITH THIS!!!  - FROM REC
+
+	var symShape = MontiShapes.ERROR
+
+	//From REC
+	var keyWide2          = 0
+	var keyHigh2          = 0
+	var keyRadiusX       = 0.0
+	var keyRadiusY       = 0.0
+	var fColor           = BLACK;
+	var sColor           = BLACK;
+	val isStopper        = symbolPaths.isStopper(fullKey)
+	var endSymbol   	 = Symbol()
+
+	var aspectRatio      = 0.0
+	var subKeyWidth      = 0
+
+	fun setPunctuation(SYM: String) : PUNCTUATION {
+		return when( SYM ) {
+			"Space"          -> PUNCTUATION.SPACE
+			"Comma"          -> PUNCTUATION.COMMA
+			"Ellipse"        -> PUNCTUATION.ELLIPSE
+			"ExclamationMark"-> PUNCTUATION.EOS
+			"QuestionMark"   -> PUNCTUATION.EOS
+			"Period"         -> PUNCTUATION.EOS
+			//Note:: Following invisible characters but appended as placeholder to determine the symbol flow.
+			"EndOfParagraph" -> PUNCTUATION.EOA  //A)bsatz == Paragraph
+			"EndOfPage"      -> PUNCTUATION.EOP   //
+			"EndOfDocument"  -> PUNCTUATION.EOD   //LIST (future: Save?) document to console in LongForm (readable in:  document.addSymbol(PERSON().PETS().Cat())   format)
+			else             -> PUNCTUATION.ERR
+		}
+	}
+
+	fun setCommand(SYM: String) : COMMANDS {
+		return when( SYM ) {
+			"Backspace"      -> COMMANDS.BS
+			"ListToConsole1" -> COMMANDS.LTC1
+			"ListToConsole2" -> COMMANDS.LTC2
+			"ReadFile"       -> COMMANDS.RF     //Currently Simulates reading of a file...
+			"NewBuffer"      -> COMMANDS.NEWBUF //TEMP, Explicit Buffer Control - for development only!
+			"UpArrowSentence"-> COMMANDS.SEN_UP    //Up Arrow - Sentence
+			"DnArrowSentence"-> COMMANDS.SEN_DN    //Down Arrow - Sentence
+			"ClearAll"       -> COMMANDS.CLRALL //Clear all -
+			else             -> COMMANDS.ERR
+		}
+	}
+
+	fun setSymbol() {
+			endSymbol = symbolPaths.getSymbolByKeys(fullKey)
+			if(isLanguage()) {
+				fColor  = COLORS.lang(GC)
+				sColor  = BLACK
+
+				//NOUN,  ARTICLE,  ADVERB, VERB, ADJECTIVE,  PREPOSITION, PRONOUN, CONJUNCTION, INTERJECTION, EMOJI,  PUNCTUATION
+
+				when (GC) {
+					"PRONOUNS"     -> {keyWide2 = 90;keyHigh2 = keyDim - 30;symShape = MontiShapes.PRONOUN}
+					"ARTICLES"     -> {keyWide2 = 60;keyHigh2 = keyDim - 25;symShape = MontiShapes.ARTICLE}
+					"ADVERBS"      -> {keyWide2 = 76;keyHigh2 = 76;keyRadiusX = 36.0;symShape = MontiShapes.ADVERB}
+					"VERBS"        -> {keyWide2 =verbDiameter;keyHigh2 = verbDiameter;keyRadiusX= verbDiameter/2.0-4;symShape = MontiShapes.VERB}
+					"ADJECTIVES"   -> {keyWide2 = 90;keyHigh2 = keyDim - 10;symShape = MontiShapes.ADJECTIVE}
+					"PREPOSITIONS" -> {keyWide2 = 130;keyHigh2 = 52;keyRadiusX = 65.0;keyRadiusY = 27.0;symShape = MontiShapes.PREPOSITION}
+					"CONJUNCTIONS" -> {keyWide2 = 90;keyHigh2 = keyDim - 30;symShape = MontiShapes.CONJUNCTION}
+					"INTERJECTIONS"-> {keyWide2 = 90;keyHigh2 = keyDim - 30;symShape = MontiShapes.INTERJECTION}
+					"EMOJIS"       -> {keyWide2 = 80;keyHigh2 = 80;keyRadiusX = 40.0;symShape = MontiShapes.EMOJI}
+					"PUNCTUATION"  -> {keyWide2 = 60;keyHigh2 = 80;symShape = MontiShapes.PUNCTUATION}
+				}//when
+			} else { //CARTOUCHE!
+				val superGroupNAME = SG
+				symShape           = MontiShapes.NOUN
+				//#1 we fetch GROUPSymbol     TODO!!  This needs to be made to a smaller standard Width (golden Ratio??)
+				val groupSymbol = symbolPaths.getSymbolByKeys(groupKey)
+				sColor   = COLORS.stroke( superGroupNAME );
+				fColor   = if (endSymbol.hD.fillColor==null) COLORS.fill( superGroupNAME ) else endSymbol.hD.fillColor!!
+				val activeVB    = groupSymbol.vB
+				aspectRatio     = if (activeVB.x1 > activeVB.y1) activeVB.x1 / activeVB.y1 else 1.0
+				subKeyWidth     = (keyDim * aspectRatio + keyWidthMargin).toInt()
+				keyWide2         = (subKeyWidth + keyDim * 0.667).toInt();
+				keyHigh2         = keyDim
+			}
+	} //End_of_Function( setSymbol() )
+ */

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" baseProfile="tiny" width="850.5" height="580.5" viewBox="-0.75 -0.75 31.5 21.5" fill="none" stroke="#000000" stroke-linejoin="round" stroke-linecap="round" stroke-width="0.5">
+    <title>25462. liver</title>
+    <desc>https://www.xelify.se/blissdictionary</desc>
+    <rect x="-0.75" y="-0.75" width="100%" height="100%" stroke="none" fill="#ffffff"/>
+    <path d="M2,8a5,5 0 0,0 0,8M2,8H6M2,16H6M6,8a5,5 0 0,1 0,8"></path><path stroke-width="0.4166" d="M3.7917,12a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0"></path><path d=""></path><path d="M8,16L16,8M16,8V12M14,12H18M14,16H18M14,12V16M18,12V16"></path><path d="M20,12L24,16M20,16L24,12"></path><path d="M26,16L28,12M28,12L30,16"></path>
+</svg>

@@ -1,0 +1,12 @@
+This is a bit TRICKY - we Want/almost NEED names for Personalization and sentence constructions.
+Also for Puzzle Statements like:
+
+BOB, KATHY, TOM, AND JUDY EACH HAVE ONE PET.
+THEIR PETS ARE A DOG, A CAT, A GIRBEL, AND A CANARY.
+
+CLUES:
+
+	TOM'S PET LIVES IN A CAGE
+	THE BOY WHO OWNS THE DOG GOES TO SCHOOL WITH THE GIRL THE OWNS THE CAT
+	KATHY'S PET IS A GREAT SINGER
+
