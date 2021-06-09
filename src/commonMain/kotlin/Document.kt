@@ -548,7 +548,7 @@ fun readDocument1(document: Document) {
         document.addSymbol(LANGUAGE().VERBS().Have())
         document.addSymbol(PERSON().BODY_PARTS().Bone())
         document.addSymbol(LANGUAGE().CONJUNCTIONS().And())
-        document.addSymbol(PERSON().BODY_PARTS().Leg())
+        document.addSymbol(PERSON().BODY_PARTS().Legs())
         document.addSymbol(LANGUAGE().CONJUNCTIONS().And())
         document.addSymbol(PERSON().BODY_PARTS().Heart())
         document.addSymbol(LANGUAGE().CONJUNCTIONS().But())
