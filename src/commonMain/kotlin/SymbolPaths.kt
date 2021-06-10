@@ -194,7 +194,7 @@ class SymbolPaths() {
             }//END_OF_SYMBOL( SKY )
 
             inner class GEOLOGY()  : Symbol() {  //Mountain
-                override val hD = Header("10l[MOUNTAIN")
+                override val hD = Header("11p[MOUNTAIN")
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 9.5, y1 = 21.5)
                 override val pAr= arrayListOf(
                     "M0,16H8M8,8V16M0,16L8,8"
@@ -202,7 +202,7 @@ class SymbolPaths() {
             }//END_OF_SYMBOL( GEOLOGY )
 
             inner class MATERIALS() : Symbol() {
-                override val hD = Header("20F")
+                override val hD = Header("21p[THING, EARTH]")
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 9.5, y1 = 21.5)
                 override val pAr= arrayListOf(
                     "M0,10H4M0,14H4M0,10V14M4,10V14M0,16H4"
@@ -211,7 +211,7 @@ class SymbolPaths() {
 
             inner class PHENOMENA() : Symbol() {  //Wind = Air + movement forward
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 13.5, y1 = 21.5)
-                override val hD = Header("40F")
+                override val hD = Header("21p[AIR, FORWARD]")
                 override val pAr= arrayListOf(
                     "M0,8H8M4,16L8,8M4,16H8M4,12H12M10,10L12,12M10,14L12,12"
                 )
@@ -249,7 +249,7 @@ class SymbolPaths() {
 
             inner class ANIMALS_FROM() : Symbol() {
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 9.5, y1 = 21.5)
-                override val hD = Header("21F")
+                override val hD = Header("21P[ANIMAL, FROM]")
                 override val pAr= arrayListOf(
                     //"M0,12H8M0,16L2,12M2,12L4,16M4,16L6,12M6,12L8,16", //Animal
                     //"M0,10V14M2,10L4,12M2,14L4,12" //From
@@ -265,7 +265,7 @@ class SymbolPaths() {
 
             inner class FACE() : Symbol() {
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 9.5, y1 = 21.5)
-                override val hD = Header("11T")
+                override val hD = Header("31P[HEAD, DOT, DOT]")
                 override val pAr= arrayListOf(
                     "M0,12a4,4 0 1,1 8,0a4,4 0 1,1 -8,0M4,10V14M2,14H6",
                     "M1.7917,10a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
@@ -275,7 +275,7 @@ class SymbolPaths() {
 
             inner class BODY_PARTS() : Symbol() {
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 13.5, y1 = 21.5)
-                override val hD = Header("10F")
+                override val hD = Header("11p[TRUNK]")    //Torso
                 override val pAr= arrayListOf(
                     "M2,8a5,5 0 0,0 0,8M2,8H10M2,16H10M10,8a5,5 0 0,1 0,8",
                 )
@@ -283,7 +283,7 @@ class SymbolPaths() {
 
             inner class FAMILY() : Symbol() {
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 13.5, y1 = 21.5)
-                override val hD = Header("33F")
+                override val hD = Header("33p[MAN, WOMAN, PROTECTION")
                 override val pAr= arrayListOf(
                     "M2,8V12M0,16L2,12M2,12L4,16M2,12L6,8M6,8L10,12M10,8V12M8,16L10,12M10,12L12,16M8,16H12",
                 )
@@ -300,7 +300,7 @@ class SymbolPaths() {
 
             inner class PERSONAL_ARTIFACTS() : Symbol() {  //TODO:  BEST IDEA:  ADD PERSONAL TO ARTIFACT,  TOOTHBRUSH NOT SO MUCH A "TOOL"
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 12.5, y1 = 21.5)
-                override val hD = Header("22T")
+                override val hD = Header("11p[ARTIFACT, INDICATOR]")
                 override val pAr= arrayListOf(
                     //"M0,12L4,16M4,8V16M2,12a2,2 0 1,1 4,0a2,2 0 1,1 -4,0",
                     "M0,16L4,12M4,12L8,16M0,16H8",
@@ -310,10 +310,8 @@ class SymbolPaths() {
 
             inner class KITCHEN_TOOLS() : Symbol() {  //mouth + hand  Joined
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 7.5, y1 = 21.5)
-                override val hD = Header("22t")
-                override val pAr= arrayListOf(
-                    "M0,12L4,16M4,8V16M2,12a2,2 0 1,1 4,0a2,2 0 1,1 -4,0",
-                )
+                override val hD = Header("11p[MOUTH + HAND")
+                override val pAr= arrayListOf("M0,12L4,16M4,8V16M2,12a2,2 0 1,1 4,0a2,2 0 1,1 -4,0")
             }//END_OF_SYMBOL( KITCHEN_TOOLS )
 
             inner class KITCHEN() : Symbol() { //GK MODIFIED
@@ -333,7 +331,7 @@ class SymbolPaths() {
 
             inner class CONSTRUCTIONS() : Symbol() { //GMMOD 02232021
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 9.5, y1 = 21.5)
-                override val hD = Header("10F")
+                override val hD = Header("11p[STRUCTURE]")
                 override val pAr= arrayListOf(
                     "M-0.2083,8a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
                     "M2,8H6",
@@ -348,7 +346,7 @@ class SymbolPaths() {
 
             inner class TRANSPORT_LAND() : Symbol() {//gk 0320 added ground symbol
             override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 9.5, y1 = 21.5)
-                override val hD = Header("32f")
+                override val hD = Header("32p[THING, WHEEL, LAND]")
                 override val pAr= arrayListOf(
                     "M0,8H4M0,12H4M0,8V12M4,8V12M0,14a2,2 0 1,1 4,0a2,2 0 1,1 -4,0M0.585786,15.414214L3.414214,12.585786M0.585786,12.585786L3.414214,15.414214",
                     "M0,18H8"
@@ -357,7 +355,7 @@ class SymbolPaths() {
 
             inner class TRANSPORT_WATER() : Symbol() {  //gk 0320 added water symbol
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 9.5, y1 = 21.5)
-                override val hD = Header("32f")
+                override val hD = Header("32p[THING, WHEEL, WATER]")
                 override val pAr= arrayListOf(
                     "M0,8H4M0,12H4M0,8V12M4,8V12M0,14a2,2 0 1,1 4,0a2,2 0 1,1 -4,0M0.585786,15.414214L3.414214,12.585786M0.585786,12.585786L3.414214,15.414214",
                     "M0,18a2.5,2.5 0 0,1 4,0M4,18a2.5,2.5 0 0,0 4,0",
@@ -366,7 +364,7 @@ class SymbolPaths() {
 
             inner class TRANSPORT_AIR() : Symbol() {//gk 0320 added air symbol
             override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 9.5, y1 = 21.5)
-                override val hD = Header("32f")
+                override val hD = Header("32p[THING, WHEEL, SKY]")
                 override val pAr= arrayListOf(
                     "M0,8H4M0,12H4M0,8V12M4,8V12M0,14a2,2 0 1,1 4,0a2,2 0 1,1 -4,0M0.585786,15.414214L3.414214,12.585786M0.585786,12.585786L3.414214,15.414214",
                     "M0,4H8"
@@ -375,7 +373,7 @@ class SymbolPaths() {
 
             inner class TRANSPORT_PATHS() : Symbol() {//gk 0320 added ground symbol
             override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 17.5, y1 = 21.5)
-                override val hD = Header("32f[PATH, ACTIVITY,TRANSPORT]")  //@@@GK MODIFIED TO BE MORE GENERAL THAN AUTO-PATH
+                override val hD = Header("32p[PATH, ACTIVITY, TRANSPORT]")  //@@@GK MODIFIED TO BE MORE GENERAL THAN AUTO-PATH
                 override val pAr= arrayListOf(
                     "M0,16H16",
                     "M8,8 H12 M8,12 H12  M8,8V12  M12,8 V12 M8,14 a2,2 0 1,1 4,0a2,2 0 1,1 -4,0 M8.586,15.41 L11.41,12.58 M8.585786,12.585 L11.41,15.41",
@@ -389,7 +387,7 @@ class SymbolPaths() {
 
             inner class TIME() : Symbol() {
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 9.5, y1 = 21.5)
-                override val hD = Header("11T")
+                override val hD = Header("11P[TIME]")
                 override val pAr= arrayListOf(
                     "M0,12a4,4 0 1,1 8,0a4,4 0 1,1 -8,0M4,8V12M4,12H8",
                 )
@@ -397,7 +395,7 @@ class SymbolPaths() {
 
             inner class ENUMERATION() : Symbol() { //ORIGINAL:: "M1,16L5,8M2,10H10M5,16L9,8M0,14H8",
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=17.5, y1=21.5)
-                override val hD = Header("11F")
+                override val hD = Header("55p[HAND]")
                 override val pAr= arrayListOf(
                     "M0,8  H2  M0,16  H2  M0,8  V16  M2,8  V16",
                     "M3,8  H5  M3,16  H5  M3,8  V16  M5,8  V16",
@@ -417,7 +415,7 @@ class SymbolPaths() {
 
             inner class COLORSGROUP() : Symbol() {
                 override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 5.5, y1 = 21.5)
-                override val hD = Header("21f")
+                override val hD = Header("21P[EYE, EARTH]")
                 override val pAr= arrayListOf(
                     "M0,12a2,2 0 1,1 4,0a2,2 0 1,1 -4,0",
                     "M1.7917,12a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
@@ -441,16 +439,16 @@ class SymbolPaths() {
 
             inner class PRONOUNS():Symbol() {  //MattL commented negatively to this one, I used "Reflect" Plus Montessori Triangle, I think....
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
-                override val hD = Header("21f")
+                override val hD = Header("11M[PRONOUN]")
                 override val pAr= arrayListOf(  //TRIANGLE - Needs to be taller + exchange symbol
                     "M0,16L4,8M4,8L8,16M0,16H8",
                     "M0,12a4,4 0 1,0 8,0M2,14L4,16M4,16L6,14M4,8V16M2,10L4,8M4,8L6,10"
                 )
-            }//END_OF_SYMBOL( PREPOSITIONS )
+            }//END_OF_SYMBOL( PRONOUNS )
 
             inner class ARTICLES():Symbol() { //SMALL (MEDITERANIAN?) BLUE TRIANGLE
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=5.5, y1=21.5)
-                override val hD = Header("10F")
+                override val hD = Header("11M[ARTICLES]")
                 override val pAr= arrayListOf(
                     "M0,16L2,12M2,12L4,16M0,16H4"
                 )
@@ -458,7 +456,7 @@ class SymbolPaths() {
 
             inner class ADVERBS():Symbol() {  //SMALL CIRCLE:: ORANGE
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
-                override val hD = Header("10F")
+                override val hD = Header("11M[ADVERBS]")
                 override val pAr= arrayListOf(
                     "M0,12a4,4 0 1,1 8,0a4,4 0 1,1 -8,0",
                 )
@@ -466,7 +464,7 @@ class SymbolPaths() {
 
             inner class VERBS():Symbol() {  //LARG CIRCLE:: BRIGHT RED   //-0.75 -0.75 14 21.5
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=14.0, y1=21.5)
-                override val hD = Header("10F")
+                override val hD = Header("11M[VERBS]")
                 override val pAr= arrayListOf(
                     "M0,12a4,4 0 1,1 12,0 a4,4 0 1,1 -12,0",
                     "M2,12a4,4 0 1,1 8,0a4,4 0 1,1 -8,0"
@@ -475,7 +473,7 @@ class SymbolPaths() {
 
             inner class ADJECTIVES():Symbol() {  //MEDIUM SIZED TRIANGLE :: DEEP BLUE
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=21.5, y1=21.5)
-                override val hD = Header("10F")
+                override val hD = Header("11M[ADJECTIVES]")
                 override val pAr= arrayListOf(
                     "M0,12M0,16L4,8M4,8L8,16M0,16H8",
                 )
@@ -483,7 +481,7 @@ class SymbolPaths() {
 
             inner class PREPOSITIONS():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
-                override val hD = Header("10F")
+                override val hD = Header("11M[PREPOSITIONS]")
                 override val pAr= arrayListOf(  //todo!  using Moon to start
                     "M0,8a5,5 0 0,1 0,8M0,8a4,4 0 1,1 0,8"
                 )
@@ -491,7 +489,7 @@ class SymbolPaths() {
 
             inner class CONJUNCTIONS():Symbol() { //LONG NARROW RECTANGLE::  PINK-ISH
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
-                override val hD = Header("10F")
+                override val hD = Header("11M[CONJUNCTIONS]")
                 override val pAr= arrayListOf( //from Card
                     "M0,10H8M0,14H8M0,10V14M8,10V14",
                 )
@@ -499,7 +497,7 @@ class SymbolPaths() {
 
             inner class INTERJECTIONS():Symbol() { //CIRCLE OVER SMALL TRIANGLE:: GOLD
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
-                override val hD = Header("20F")
+                override val hD = Header("11M[INTERJECTIONS]")
                 override val pAr= arrayListOf( //TRIANGLE + MOUTH
                     "M0,8a4,4 0 1,1 8,0a4,4 0 1,1 -8,0",
                     "M0,16L4,8M4,8L8,16M0,16H8"
@@ -510,7 +508,7 @@ class SymbolPaths() {
 
             inner class EMOJIS():Symbol() { //SMILEY FACE:: YELLOW
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
-                override val hD = Header("11t")
+                override val hD = Header("11M[EMOJIS]")
                 override val pAr= arrayListOf(
                     "M0,12a4,4 0 1,1 8,0a4,4 0 1,1 -8,0",
                     "M2.4,13 a1.5,1.5 0 1,0 3.0,0",
@@ -521,18 +519,8 @@ class SymbolPaths() {
 
             inner class PUNCTUATION():Symbol() {  //BIG COMMA:: BLACK?
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=1.5, y1=21.5)
-                override val hD = Header("10F")
+                override val hD = Header("11M[PUNCTUATION]")
                 override val pAr= arrayListOf(
-                    //"M0,10  a2,2 0 1,1 2,2  M2,12   V14",   //qmark - ORIG
-                    //"M1.7917,16   a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
-                    //"M2,10  a2,2 0 1,1 2,2  M2,12   V14",   //qmark - MOD
-                    //"M3.7917,16   a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
-
-                    //"M0,8  V14",  //exclamation mark - ORIG
-                    //"M-0.2083,16   a0.2083,0.2083 0 1,1 0.4166,0   a0.2083,0.2083 0 1,1 -0.4166,0",
-                    //"M4,8  V14",  //exclamation mark - MOD
-                    //"M3.8, 16   a0.2083,0.2083 0 1,1 0.4166,0   a0.2083,0.2083 0 1,1 -0.4166,0",
-
                     "M-0.2083,16a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
                     "M0.2777,16q0.0694,0.6943,-0.5554,1.1109",
                 )
@@ -653,7 +641,7 @@ class SymbolPaths() {
 
             inner class Snow():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
-                override val hD = Header("30l[WATER, STAR, DOWN]")
+                override val hD = Header("31l[WATER, STAR, DOWN]")
                 override val pAr= arrayListOf(
                     "M0,12a2.5,2.5 0 0,1 4,0M4,12a2.5,2.5 0 0,0 4,0M4,8V14M4,14V18M3,15L5,17M3,17L5,15",
                 )
@@ -991,6 +979,14 @@ class SymbolPaths() {
                     "M0,12H8M0,16L2,12M2,12L4,16M4,16L6,12M6,12L8,16",
                 )
             }//END_OF_SYMBOL( Animal )
+
+            inner class Horse():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=15.5, y1=21.5)
+                override val hD = Header("11P[ANIMAL + HORSE]")
+                override val pAr= arrayListOf(
+                    "M0,12H8M0,16L2,12M2,12L4,16M4,16L6,12M6,12L8,16M8,12L12,8M12,8L14,10",
+                )
+            }//END_OF_SYMBOL( Horse )
 
             inner class Rabbit():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=17.5, y1=21.5)
@@ -1529,6 +1525,9 @@ class SymbolPaths() {
 
         } //END_OF_GROUPCODE( PETS )
 
+//        inner class TOYS { //TODO  - Seems like a good child-centric Group To Add early.
+//           //BALL, BALLOON, BIKE, DOLL, SKATEBOARD, STUFFED ANIMAL, SANDBOX, SEESAW/TEETER-TOTTER,  (SWING)
+//        }
 
         inner class PERSONAL_ARTIFACTS { //GK MANUAL MOD, TODO?  ADD TOYS, PLAY THINGS?
 
@@ -1593,7 +1592,7 @@ class SymbolPaths() {
 
             inner class Saw():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=13.5, y1=21.5)
-                override val hD = Header("00F")
+                override val hD = Header("11P[SAW+TEETH]")
                 override val pAr= arrayListOf(
                     "M0,20L12,8M4,16H8M8,12V16M8,12H12M12,8V12",
                 )
@@ -1609,7 +1608,7 @@ class SymbolPaths() {
 
             inner class Shovel():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=5.5, y1=21.5)
-                override val hD = Header("00F")
+                override val hD = Header("11P[SHOVEL]")
                 override val pAr= arrayListOf(
                     "M0,8H4M2,8V14M0,14H4M0,14a2,2 0 1,0 4,0",
                 )
@@ -1617,7 +1616,7 @@ class SymbolPaths() {
 
             inner class Soap():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=19.5, y1=21.5)
-                override val hD = Header("21P[THING, WASH")  //@@@ Where WASH is BOWL + WATER
+                override val hD = Header("21P[THING, WASH]")  //@@@ Where WASH is BOWL + WATER
                 override val pAr= arrayListOf(
                     "M0,10H4M0,14H4M0,10V14M4,10V14",
                     "M6,12a4,4 0 1,0 8,0M6,12a2.5,2.5 0 0,1 4,0M10,12a2.5,2.5 0 0,0 4,0"
@@ -1793,9 +1792,6 @@ class SymbolPaths() {
                 )
             }//END_OF_SYMBOL( City )
 
-
-
-
             inner class Library():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=19.5, y1=21.5)
                 override val hD = Header("22P[HOUSE, BOOK")
@@ -1822,7 +1818,7 @@ class SymbolPaths() {
 
             inner class Bridge():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=17.5, y1=21.5)
-                override val hD = Header("00F")
+                override val hD = Header("11P[BRIDGE]")
                 override val pAr= arrayListOf(
                     "M0,16H4M4,16a4,4 0 1,1 8,0M12,16H16",
                 )
@@ -1830,7 +1826,7 @@ class SymbolPaths() {
 
             inner class Road():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=17.5, y1=21.5)
-                override val hD = Header("00F")
+                override val hD = Header("21P[PLACE, AUTOMOBILE]")
                 override val pAr= arrayListOf(
                     "M0,16H16M8,12H16M8,14a2,2 0 1,1 4,0a2,2 0 1,1 -4,0M8.5857,15.4142L11.4142,12.5857M8.5857,12.5857L11.4142,15.4142M12,14a2,2 0 1,1 4,0a2,2 0 1,1 -4,0M12.5857,15.4142L15.4142,12.5857M12.5857,12.5857L15.4142,15.4142M13,11L15,9M14,10L16,12M2,13L4,15M4,15L6,13",
                 )
@@ -1838,7 +1834,7 @@ class SymbolPaths() {
 
             inner class Walkway():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=29.5, y1=21.5)
-                override val hD = Header("00F")
+                override val hD = Header("31P[PLACE, ACTIVITY, WALK]")
                 override val pAr= arrayListOf(
                     "M0,16H8M2,14L4,16M4,16L6,14",
                     "M10,16L12,12M12,12L14,16",
@@ -1899,7 +1895,7 @@ class SymbolPaths() {
 
             inner class BalloonHotAir():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
-                override val hD = Header("11P[BALLON+ENCLOSURE]300")
+                override val hD = Header("11P[BALLOON+ENCLOSURE]")
                 override val pAr= arrayListOf("M0,8a4,4 0 1,1 8,0a4,4 0 1,1 -8,0M2,12V14M2,14H6M6,12V14")
             }//END_OF_SYMBOL( BalloonHotAir )
 
@@ -2322,6 +2318,26 @@ class SymbolPaths() {
                     "M9.7917,12a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0"
                 )
             }//END_OF_SYMBOL( Outside )
+
+            inner class Indoors():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
+                override val hD = Header("21P[HOUSE, INDICATOR, DOT]")
+                override val pAr= arrayListOf(
+                    "M0,12V16M0,16H8M8,12V16M0,12L4,8M4,8L8,12",
+                    "M3.7917,12a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
+                    "M3,4L4,6M4,6L5,4"
+                )
+            }//END_OF_SYMBOL( Indoors )
+
+            inner class Outdoors():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=11.5, y1=21.5)
+                override val hD = Header("21P[HOUSE, INDICATOR, DOT]")
+                override val pAr= arrayListOf(
+                    "M0,12V16M0,16H8M8,12V16M0,12L4,8M4,8L8,12",
+                    "M9.7917,12a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
+                    "M3,4L4,6M4,6L5,4"
+                )
+            }//END_OF_SYMBOL( Outdoors )
 
             inner class On():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=5.5, y1=21.5)
@@ -3779,7 +3795,8 @@ class SymbolPaths() {
         }
 
         with( ANIMATE().ANIMAL_TYPES() ) {
-            keyAdd(Animal());keyAdd(Rabbit(), true)
+            //TODO!   ADD HORSE!!!
+            keyAdd(Animal());keyAdd(Rabbit());keyAdd(Horse(), true)
             keyAdd(Wings());keyAdd(Bird(),true)
             keyAdd(Fish(),true)
             keyAdd(Frog(),true)  //amphibians...
@@ -3983,7 +4000,8 @@ class SymbolPaths() {
 
         with( LANGUAGE().PREPOSITIONS() ) {
             keyAdd(Above());keyAdd(Below());keyAdd(Before());keyAdd(After(), true)
-            keyAdd(Inside());keyAdd(Outside(), true)
+            keyAdd(Inside());keyAdd(Outside(),   true)
+            keyAdd(Indoors());keyAdd(Outdoors(), true)
             keyAdd(At());keyAdd(On(), true)
             keyAdd(To())
         }

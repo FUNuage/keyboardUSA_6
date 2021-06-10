@@ -22,7 +22,7 @@ var uiFont: BitmapFont by Delegates.notNull()
 
 
 //Keyboard MODES
-enum class KeyboardMODES {ADULT_DEMONSTRATE, ADULT_EXPLORE, ADULT_USE_MONTESSORI, CHILD_TEMPLATED, FULL_MONTESSORI, CARTOUCHE, PLAIN_BLISS}
+//enum class KeyboardMODES {ADULT_DEMONSTRATE, ADULT_EXPLORE, ADULT_USE_MONTESSORI, CHILD_TEMPLATED, FULL_MONTESSORI, CARTOUCHE, PLAIN_BLISS}
 
 
 //The "Symbols Library", the source of all information about a Symbol, including (as is) realtime
@@ -32,8 +32,8 @@ val symbolPaths    = SymbolPaths()
 var gLSentenceBufferOnPANEL = SentenceBufferOnPANEL( Document() )
 
 //These are the Counters for each Panel
-private var gColN       = 0;private var gRowN            = 0  //G)roup Codes
-private var sColN       = 0;private var sRowN            = 0  //S)ymbol Keys
+private var gColN       = 0;private var gRowN            = 0  //Group Codes
+private var sColN       = 0;private var sRowN            = 0  //Symbol Keys
 private var gLKeyColN   = 0;private var gLKeyRowN        = 0
 
 private var gLsentencePanelHt= 0
@@ -82,10 +82,10 @@ private const val gLOutWd = WIDTH  - 5.0;
 private const val gLOutHt = HEIGHT - 5.0;
 private const val gLGrpWd = gLOutWd * 0.64;
 private const val gLGrpHt = StndKeyH * 7.4 + 10
-private const val gLSymWd = gLOutWd - gLGrpWd - 11;
+private const val gLSymWd = gLOutWd - gLGrpWd - 11
 private const val gLSymHt = gLGrpHt
-private const val gLSenWd = gLOutWd - 18;
-private const val gLSenHt = HEIGHT - gLGrpHt - 12;
+private const val gLSenWd = gLOutWd - 18
+private const val gLSenHt = HEIGHT - gLGrpHt - 12
 
 private const val glActiveYLoc = HEIGHT * 0.511
 
@@ -272,7 +272,7 @@ fun activeFrame(width: Double, height: Double) : NativeImage {  //Special
 //Used to position the GROUP Keys
 data class ColNRowN(var colN: Int, var rowN: Int)
 class ColRow() {
-	var nW = 1;	var nA = 1;	var nP = 1;	var nS = 1;	var nC = 1;	var nL = 0;
+	private var nW = 1;	private var nA = 1;	private var nP = 1;	private var nS = 1;	private var nC = 1;	private var nL = 0;
 	fun get(fCh: Char): ColNRowN {
 		return when (fCh) {
 			'W' -> ColNRowN(1, ++nW)
@@ -314,7 +314,7 @@ class ColRow() {
 
 fun symbolCountReport() {
 	var nEleAll = 0;var nNouns = 0;
-	println(">GROUP Counts, Total symbols report:")
+	println(">symbolCountReport(); >GROUP Counts, Total symbols report:")
 	for (SG in symbolPaths.superGroups()) {
 		val superGroupNAME   = SG.toString()
 		val groupSymbolKeyAr = symbolPaths.groupKeysBySG(superGroupNAME)
@@ -330,6 +330,36 @@ fun symbolCountReport() {
 	println("\t\tNOUNS, \t\tCount $nNouns")
 	println("===============================================")
 	println("Total number words: ${nEleAll - 6}\n\n")  //Not exact, SG keys being included? subtracting 6 reconciles total.
+
+}
+
+
+fun symbolCountReport2() {
+	var nEleAll = 0;var nNouns = 0;
+	println(">symbolCountReport2(); GROUP Counts, Total symbols report:")
+	for (SG in symbolPaths.superGroups()) {
+		val superGroupNAME   = SG.toString()
+
+		if ( superGroupNAME == "LANGUAGE" || superGroupNAME == "CONCEPTS") {//TODO:  TEMPORARY EXCLUSION
+			continue
+		}
+
+		val groupSymbolKeyAr = symbolPaths.groupKeysBySG(superGroupNAME)
+		for (groupSymbolKey in groupSymbolKeyAr) {
+			val groupCd = groupSymbolKey.split(".")[2]
+			println("\tsuperGroupNAME: $superGroupNAME, \tgroupCODE: $groupCd")
+			val symbolKeyAr = symbolPaths.symbolKeysBySGGC(superGroupNAME, groupCd)
+			for (symbolKeys in symbolKeyAr) {
+				val symbolRec  = symbolPaths.getSymbolByKeys(symbolKeys)
+				val headerType = symbolRec.hD.type
+
+				println("\t\t$headerType   (symbolKeys = $symbolKeys)")
+			}
+		}
+		println()
+	}
+
+
 
 }
 
@@ -353,6 +383,7 @@ suspend fun main() = Korge(width = WIDTH, height = HEIGHT, bgcolor = Colors["#11
 	gLKeyColN        = BegKeyCOL - 1;gLKeyRowN = BegKeyROW
 	//BUILD KEYBOARD FRAME(S)  -  Extra space in y-axis to go to expanding the SentencePANEL
 	symbolCountReport()
+	symbolCountReport2()
 
 	val kbOutContainer = container {val kbOutFrame = frame(gLOutWd, gLOutHt);image(kbOutFrame).xy(((width - gLOutWd) / 2).toInt(), ((height - gLOutHt) / 2).toInt())}
 	val kbGroupFrame   = container {val frame = frame(gLGrpWd, gLGrpHt);image(frame).xy( 10, 10)} //Group Frame
