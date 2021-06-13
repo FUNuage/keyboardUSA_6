@@ -10,6 +10,30 @@ enum class ContainerState {NATIVE, BUTTON, CARTOUCHE, MONTESSORI, NULL}
     4. Alternative idea would be to have "from Left" and "from Right" into each "PANEL" of Display...   this might be the best in longer run!?
  */
 
+/*BEATLE BERRY, BROOM, BUCKET, BUTTERFLY
+  CLOSET, CLOTH, CHEESE, CHERRIES
+  DIGITAL, DEER, DAY, DESIRE OF MIND/HEART,  DISPOSE, DOUBT, DRESSER, DRUM
+
+*/
+
+/*
+MONEY:  DOLLAR, EURO
+
+
+CONCEPTS:  DIRECTIONS ->  EAST, WEST, NORTH, SOUTH
+           EMOTIONS ->
+
+
+ACQUIRE, ABOUT, ABOVE, ACT, ADD, ADULT, ADVANCE, AIRPLANE, AFFECTION, AGO, AGREEMENT, ALERT, ALIVE, ALL, ALLOW, ALSO, ALTERATION, ALTERNATE, AM, ANIMAL, ANIMAL-WATER, ANKLE, ANTICIPATE, APPLE, APPLIANCE, APPROACH, AREA, ARTIFACT, ARTIFICIAL INTELLIGENCE, ASSISTANCE, ATMOSPHERE, ATOM, AWHILE
+BABY. BABY BOY, BABY GIRL, BACK, BAG, BALL, BALLOON, BASE, BASKET, BEARD, BEDPAN, BEETLE, BEFORE, BEGIN, BERRY, BESIDE, BETWEEN BIG, BIRD, BLISSYMBOL, BLOCK, BOARD, BOAT, BODY, BOILER, BOTTOM, BOW & ARROW, BOWL, BRAIN, BREAK, BRIDGE, BROADNESS, BROOM, BUCKET, BUILDING, BULB (FLOWER), BUS, BRUSH, BUSINESS, BUTTERFLY, BY, BY MEANS OF,
+CABBAGE,CARROT, CELLERY, CAKE, CORN, CALCULATION, CAMERA, CAMEL, CAMPER, CAN, CANCELLATION, CANNON, CAP, CARD, CAVITY - CARIES, CARRIAGE, CART, CASE, CAT, CAUSE, CENT, CEREAL (GRAIN), CHAMBER POT, CHANGE, CHEEK, CHEESE, CHERRIES, CREAM, CRUMBS, CHEST OF DRAWERS, CHILD, CHOICE, CHRISTIAN, CIRCLE, CIRCULATION, CITIZEN, CLAY, CLOCK, CLOSE, CLOSET, CONCEPT, CONJURE, CONNECT, CONTINUE, COUNTRY
+DAMAGE, DRUPE, DANGER, DAY, DEER, DROMEDARY, DEPARTURE, DESIRE OF MIND, DESIRE OF HEART, DEVICE, DIGITAL, DISPOSE, DIVISION, DO, DOUBT, DOWN, DRESSER, DRINK, DRUM
+ETROG, EVERGREEN TREE, EURO, EASE, EARLY_MORNING, EDGE, END, ENGINE, EVENING, EXCHANGE,
+ */
+
+
+
+
 
 /*BASIC SYMBOLS THAT HAVE NOT BEEN COVERED YET:
     1.  PALM       (Needed for FRUIT::date
@@ -22,7 +46,34 @@ enum class ContainerState {NATIVE, BUTTON, CARTOUCHE, MONTESSORI, NULL}
     25  CHIMNEY,    26  CORN,    27  CRYSTAL,    28  CURRANTS,    29  CURTAINS,    30  CURRENT,    31  CYLINDER (have TUBE),    32  DAMAGE,    33  DANGER
     34  DAY,    35  DEER <<<,    36  DEED,    37  DELETION,    38  DEVICE <<<,    39  DEVIL,    40  DIRT  ??  not single, but on same level as Sand
     41  DRINK -  food + water,
-    42  ELECTRICITY,    43  ETROG (what is?),    44  EVALUATION,    45  EVENING,    46  EVERGREEN TREE,    47  EYELID
+    42  EAGLE 43 EAR 44. EASE  45 EAST  46 MONEY
+    ELECTRICITY,    43  ETROG (what is?),    44  EVALUATION,    45  EVENING,    46  EVERGREEN TREE,    47  EYELID
+    48
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  */
 
 data class ViewBox(var x0: Double = 0.0, var y0: Double = 0.0, var x1: Double = 0.0, var y1: Double = 0.0)
@@ -429,6 +480,26 @@ class SymbolPaths() {
                 )
             }//END_OF_SYMBOL( COLORSGROUP )
 
+
+            inner class DIRECTIONS() : Symbol() {
+                override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 15.5, y1 = 21.5)
+                override val hD = Header("[GENERALIZATION, FORWARD]B")
+                override val pAr= arrayListOf(
+                    "M0,12L4,16M0,16L4,12M0,10a2,2 0 1,1 4,0a2,2 0 1,1 -4,0",
+                    "M6,12H14M12,10L14,12M12,14L14,12"
+                )
+            }//END_OF_SYMBOL( DIRECTIONS )
+
+
+            inner class SHAPES() : Symbol() {
+                override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 11.5, y1 = 21.5)
+                override val hD = Header("[EYE, THING]B")
+                override val pAr= arrayListOf(
+                    "M0,12a2,2 0 1,1 4,0a2,2 0 1,1 -4,0",
+                    "M1.7917,12a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
+                    "M6,10H10M6,14H10M6,10V14M10,10V14")
+            }//END_OF_SYMBOL( SHAPES )
+
             //inner class PHYSICS() : Symbol() {
             //    override val vB = ViewBox(x0 = -0.75, y0 = -0.75, x1 = 17.5, y1 = 21.5)
             //    override val hD = Header("00F")
@@ -799,6 +870,12 @@ class SymbolPaths() {
                 )
             }//END_OF_SYMBOL( Wind )
 
+            inner class Electrical():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=5.5, y1=21.5)
+                override val hD = Header("[ELECTRICAL]A")  //@@@ Where AIR is Compound with SKY,  SKY + NOSE   (Whew, I guess so)
+                override val pAr= arrayListOf( "M0,12L4,8M0,12H4M0,16L4,12", "M1,4L2,6M2,6L3,4" )
+            }//END_OF_SYMBOL( Electrical )
+
         }//END_OF_SUPERGROUP( WORLD )
 
     } //END_OF_SUPERGROUP( WORLD )
@@ -1005,10 +1082,20 @@ class SymbolPaths() {
             inner class Horse():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=15.5, y1=21.5)
                 override val hD = Header("[ANIMAL + HORSE_HEAD]A")
-                override val pAr= arrayListOf(
-                    "M0,12H8M0,16L2,12M2,12L4,16M4,16L6,12M6,12L8,16M8,12L12,8M12,8L14,10",
-                )
+                override val pAr= arrayListOf("M0,12H8M0,16L2,12M2,12L4,16M4,16L6,12M6,12L8,16M8,12L12,8M12,8L14,10")
             }//END_OF_SYMBOL( Horse )
+
+            inner class Deer():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
+                override val hD = Header("[ANIMAL + HORN]A")
+                override val pAr= arrayListOf("M0,12H8M0,16L2,12M2,12L4,16M4,16L6,12M6,12L8,16M4,8a2,2 0 1,0 4,0")
+            }//END_OF_SYMBOL( Deer )
+
+            inner class Camel():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=15.5, y1=21.5)
+                override val hD = Header("[ANIMAL + HUMPSX2 + HEAD]A")
+                override val pAr= arrayListOf("M0,12H8M0,16L2,12M2,12L4,16M4,16L6,12M6,12L8,16M8,12L12,8M12,8L14,10M0,12a2,2 0 1,1 4,0M4,12a2,2 0 1,1 4,0")
+            }//END_OF_SYMBOL( Camel )
 
             inner class Rabbit():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=17.5, y1=21.5)
@@ -1022,26 +1109,32 @@ class SymbolPaths() {
             inner class Bird():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
                 override val hD = Header("[BIRD]A")
-                override val pAr= arrayListOf(
-                    "M0,8a4,4 0 0,1 4,4M4,12a4,4 0 0,1 4,-4M3,14L4,12M4,12L5,14",
-                )
+                override val pAr= arrayListOf("M0,8a4,4 0 0,1 4,4M4,12a4,4 0 0,1 4,-4M3,14L4,12M4,12L5,14")
             }//END_OF_SYMBOL( Bird )
+
+            inner class Eagle():Symbol() { //BIRD OF PREY, INCLUDING HAWK
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
+                override val hD = Header("[BIRD+CLAWS]B")
+                override val pAr= arrayListOf("M0,8a4,4 0 0,1 4,4M4,12a4,4 0 0,1 4,-4M3,14L4,12M4,12L5,14M1,14a1,1 0 1,1 2,0M5,14a1,1 0 1,1 2,0")
+            }//END_OF_SYMBOL( Eagle )
 
             inner class Fish():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
                 override val hD = Header("[FISH]A")
-                override val pAr= arrayListOf(
-                    "M0,12a4,4 0 1,0 8,0M0,16a4,4 0 1,1 8,0",
-                )
-            }//END_OF_SYMBOL( Fishanimal )
+                override val pAr= arrayListOf("M0,12a4,4 0 1,0 8,0M0,16a4,4 0 1,1 8,0")
+            }//END_OF_SYMBOL( Fish )
 
             inner class Insect():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=13.5, y1=21.5)
                 override val hD = Header("[INSECT]A")
-                override val pAr= arrayListOf(
-                    "M0,16L2,12M2,12L4,16M4,16L6,12M6,12L8,16M8,16L10,12M10,12L12,16",
-                )
+                override val pAr= arrayListOf("M0,16L2,12M2,12L4,16M4,16L6,12M6,12L8,16M8,16L10,12M10,12L12,16")
             }//END_OF_SYMBOL( Insect )
+
+            inner class Butterfly():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
+                override val hD = Header("BUTTERFLY]A")
+                override val pAr= arrayListOf("M2,8a5,5 0 0,0 0,8M2,8a5,5 0 0,1 0,8M6,8a5,5 0 0,0 0,8M6,8a5,5 0 0,1 0,8")
+            }//END_OF_SYMBOL( Butterfly )
 
             inner class Spider():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.55, y1=21.5)
@@ -1553,6 +1646,14 @@ class SymbolPaths() {
 
         inner class PERSONAL_ARTIFACTS { //GK MANUAL MOD, TODO?  ADD TOYS, PLAY THINGS?
 
+            inner class Comb():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
+                override val hD = Header("[COMB]A")
+                override val pAr= arrayListOf(
+                    "M0,12V16M0,16H8M8,12V16M4,12V16",
+                )
+            }//END_OF_SYMBOL( Comb )
+
             inner class Brush():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
                 override val hD = Header("[BRUSH]A")
@@ -1597,11 +1698,27 @@ class SymbolPaths() {
 
             inner class Fiber():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
-                override val hD = Header("[FIBER]B")
-                override val pAr= arrayListOf(
-                    "M0,16a4,4 0 0,1 4,-4M4,12a4,4 0 0,0 4,-4"
-                )
+                override val hD = Header("[FIBER]A")
+                override val pAr= arrayListOf("M0,16a4,4 0 0,1 4,-4M4,12a4,4 0 0,0 4,-4")
             }//END_OF_SYMBOL( Fiber )
+
+            inner class Cloth():Symbol() { //SHOULD REALLY BE WOVEN FIBERS - NOT STRAIGHT LINES
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
+                override val hD = Header("[CLOTH]A")
+                override val pAr= arrayListOf("M2,8V16M6,8V16M0,10H8M0,14H8")
+            }//END_OF_SYMBOL( Cloth )
+
+            inner class Money():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=5.5, y1=21.5)
+                override val hD = Header("[MONEY]")
+                override val pAr= arrayListOf("M0,10a2,2 0 1,1 4,0a2,2 0 1,1 -4,0M0,14a2,2 0 1,1 4,0a2,2 0 1,1 -4,0M2,8V16")
+            }//END_OF_SYMBOL( Money )
+
+              inner class Key():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
+                override val hD = Header("[KEY]")
+                override val pAr= arrayListOf("M0,12H8M0,12a2,2 0 1,0 4,0M8,12V16")
+            }//END_OF_SYMBOL( Key )
 
             inner class Thread():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=15.5, y1=21.5)
@@ -1687,9 +1804,15 @@ class SymbolPaths() {
 
             inner class Container():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
-                override val hD = Header("[CONTAINER]")
+                override val hD = Header("[CONTAINER]A")
                 override val pAr= arrayListOf("M0,12a4,4 0 1,0 8,0")
             }//END_OF_SYMBOL( Container )
+
+            inner class Pitcher():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=11.5, y1=21.5)
+                override val hD = Header("[PITCHER]A")
+                override val pAr= arrayListOf("M0,8L4,12M4,8V16M4,16H8M8,8V16M8,10a2,2 0 1,1 0,4")
+            }//END_OF_SYMBOL( Pitcher )
 
             inner class Cup():Symbol() {
                 override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=7.5, y1=21.5)
@@ -1726,6 +1849,18 @@ class SymbolPaths() {
                 override val hD = Header("[SPOON]A")
                 override val pAr= arrayListOf("M0,16L4,12M4,12L4.5857,11.4142M4,10a2,2 0 1,1 4,0a2,2 0 1,1 -4,0")
             }//END_OF_SYMBOL( Spoon )
+
+            inner class Pot():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=13.5, y1=21.5)
+                override val hD = Header("[POT]A")
+                override val pAr= arrayListOf("M2,8a2,2 0 1,0 0,4M2,8V16M2,16H10M10,8V16M10,8a2,2 0 1,1 0,4")
+            }//END_OF_SYMBOL( Pot )
+
+            inner class Pan():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=13.5, y1=21.5)
+                override val hD = Header("[PAN]A")
+                override val pAr= arrayListOf("M0,12V16M0,16H8M8,12V16M8,12L12,8")
+            }//END_OF_SYMBOL( Pan )
 
         } //END_OF_GROUPCODE( KITCHEN_TOOLS )
 
@@ -2266,6 +2401,151 @@ class SymbolPaths() {
             }//END_OF_SYMBOL( Yellow )
 
         }//END_OF_GROUPCODE(COLORSGROUP )
+
+
+        inner class DIRECTIONS() {
+
+            inner class BLANK:Symbol() {override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5);override val pAr= arrayListOf("M0,12")}//END_OF_SYMBOL( BLANK )
+
+            inner class Right():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=5.5, y1=21.5)
+                override val hD = Header("[VERTICALLINE, HORIZONTALLINE]B")
+                override val pAr= arrayListOf("M0,8H4M0,8V16")
+            }//END_OF_SYMBOL( Right )
+
+            inner class Left():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=5.5, y1=21.5)
+                override val hD = Header("[VERTICALLINE, HORIZONTALLINE]B")
+                override val pAr= arrayListOf("M0,8H4M4,8V16")
+            }//END_OF_SYMBOL( Left )
+
+            inner class Up():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=5.5, y1=21.5)
+                override val hD = Header("[ARROW]A")
+                override val pAr= arrayListOf("M0,10L2,8M2,8L4,10M2,8V16")
+            }//END_OF_SYMBOL( Up )
+
+            inner class Down():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=5.5, y1=21.5)
+                override val hD = Header("[ARROW]A")
+                override val pAr= arrayListOf("M0,14L2,16M2,16L4,14M2,8V16")
+            }//END_OF_SYMBOL( Down)
+
+            inner class North():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
+                override val hD = Header("[EARTH, ARROW]A")
+                override val pAr= arrayListOf("M0,12a4,4 0 1,1 8,0a4,4 0 1,1 -8,0M2,11L4,9M4,9L6,11")
+            }//END_OF_SYMBOL( North )
+
+            inner class South():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
+                override val hD = Header("[EARTH, ARROW]A")
+                override val pAr= arrayListOf("M0,12a4,4 0 1,1 8,0a4,4 0 1,1 -8,0M2,13L4,15M4,15L6,13")
+            }//END_OF_SYMBOL( South )
+
+            inner class East():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
+                override val hD = Header("[EARTH, ARROW]A")
+                override val pAr= arrayListOf("M0,12a4,4 0 1,1 8,0a4,4 0 1,1 -8,0M5,10L7,12M5,14L7,12")
+            }//END_OF_SYMBOL( East )
+
+            inner class West():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
+                override val hD = Header("[EARTH, ARROW]A")
+                override val pAr= arrayListOf("M0,12a4,4 0 1,1 8,0a4,4 0 1,1 -8,0M1,12L3,10M1,12L3,14")
+            }//END_OF_SYMBOL( West )
+
+            //east, west, south, north
+        }//END_OF_GROUPCODE( DIRCTIONS())
+
+
+        inner class SHAPES() {
+
+            inner class BLANK:Symbol() {override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5);override val pAr= arrayListOf("M0,12")}//END_OF_SYMBOL( BLANK )
+
+            inner class Shape():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=11.5, y1=21.5)
+                override val hD = Header("[EYE, THING]C")
+                override val pAr= arrayListOf(
+                    "M0,12a2,2 0 1,1 4,0a2,2 0 1,1 -4,0",
+                    "M1.7917,12a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
+                    "M6,10H10M6,14H10M6,10V14M10,10V14"
+                )
+            }//END_OF_SYMBOL( Shape )
+
+            inner class Line():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=1.5, y1=21.5)
+                override val hD = Header("[LINE]C")
+                override val pAr= arrayListOf("M0,8V16")
+            }//END_OF_SYMBOL( Line )
+
+            inner class Curve():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=5.5, y1=21.5)
+                override val hD = Header("[CURVE]C")
+                override val pAr= arrayListOf("M0,8a4,4 0 1,1 0,8")
+            }//END_OF_SYMBOL( Curve )
+
+
+
+            inner class RoundShape():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=21.5, y1=21.5)
+                override val hD = Header("[SHAPE, ROUND]C")
+                override val pAr= arrayListOf(
+                    "M0,12a2,2 0 1,1 4,0a2,2 0 1,1 -4,0",
+                    "M1.7917,12a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
+                    "M6,10H10M6,14H10M6,10V14M10,10V14",
+                    "M12,12a4,4 0 1,1 8,0a4,4 0 1,1 -8,0"
+                )
+            }//END_OF_SYMBOL( RoundShape )
+
+            inner class SquareShape():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=21.5, y1=21.5)
+                override val hD = Header("[SHAPE, SQUARE]C")
+                override val pAr= arrayListOf(
+                    "M0,12a2,2 0 1,1 4,0a2,2 0 1,1 -4,0",
+                    "M1.7917,12a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
+                    "M6,10H10M6,14H10M6,10V14M10,10V14",
+                    "M12,8H20M12,16H20M12,8V16M20,8V16"
+                )
+            }//END_OF_SYMBOL( SquareShape )
+
+            inner class TriangleShape():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=21.5, y1=21.5)
+                override val hD = Header("[SHAPE, TRIANGLE]C")
+                override val pAr= arrayListOf(
+                    "M0,12a2,2 0 1,1 4,0a2,2 0 1,1 -4,0",
+                    "M1.7917,12a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
+                    "M6,10H10M6,14H10M6,10V14M10,10V14",
+                    "M12,16L16,8M16,8L20,16M12,16H20"
+                )
+            }//END_OF_SYMBOL( TriangleShape )
+
+            inner class DiamondShape():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=21.5, y1=21.5)
+                override val hD = Header("[SHAPE, DIAMOND]C")
+                override val pAr= arrayListOf(
+                    "M0,12a2,2 0 1,1 4,0a2,2 0 1,1 -4,0",
+                    "M1.7917,12a0.2083,0.2083 0 1,1 0.4166,0a0.2083,0.2083 0 1,1 -0.4166,0",
+                    "M6,10H10M6,14H10M6,10V14M10,10V14",
+                    "M12,12L14,8M14,8L16,12M12,12L14,16M14,16L16,12"
+                )
+            }//END_OF_SYMBOL( DiamondShape )
+
+            //Polygon  <<<many sided
+
+            inner class Parallel():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=3.5, y1=21.5)
+                override val hD = Header("[REFERENCELINE, REFERENCELINE]C")
+                override val pAr= arrayListOf("M0,8V16M2,8V16")
+            }//END_OF_SYMBOL( Parallel )
+
+            inner class Perpendicular():Symbol() {
+                override val vB = ViewBox(x0=-0.75, y0=-0.75, x1=9.5, y1=21.5)
+                override val hD = Header("[REFERENCELINE, REFERENCELINE]C")
+                override val pAr= arrayListOf("M0,16H8M4,8V16")
+            }//END_OF_SYMBOL( Perpendicular )
+
+        }//END_OF_GROUPCODE( SHAPES())
 
     }//END_OF_SUPERGROUP( CONCEPTS )
 
@@ -3744,7 +4024,7 @@ class SymbolPaths() {
 
         with( GROUPS().SCENES()) { keyAdd(CONSTRUCTIONS());keyAdd(TRANSPORT_LAND());keyAdd(TRANSPORT_WATER());keyAdd(TRANSPORT_AIR());keyAdd(TRANSPORT_PATHS()); }
 
-        with( GROUPS().CONCEPTS()) {keyAdd(TIME());keyAdd(ENUMERATION());keyAdd(COLORSGROUP())}  //keyAdd(ENERGY());
+        with( GROUPS().CONCEPTS()) {keyAdd(TIME());keyAdd(ENUMERATION());keyAdd(COLORSGROUP());keyAdd(DIRECTIONS());keyAdd(SHAPES())}  //keyAdd(ENERGY());
 
 
         // 1"PRONOUNS", 2"ARTICLES",   3"ADVERBS",    4"VERBS", 5"ADJECTIVES", 6"PREPOSITIONS",  7"CONJUNCTIONS", 8"INTERJECTIONS", 9"EMOJIS", 10"PUNCTUATION"
@@ -3793,6 +4073,7 @@ class SymbolPaths() {
             keyAdd(Fog(),true)
             keyAdd(Ice());keyAdd(Snow(),true)
             keyAdd(Wind(),true)
+            keyAdd(Electrical(),true)
         }
 
         //=================================NEW SUPERGROUP===============================================================
@@ -3816,11 +4097,11 @@ class SymbolPaths() {
 
         with( ANIMATE().ANIMAL_TYPES() ) {
             //TODO!   ADD HORSE!!!
-            keyAdd(Animal());keyAdd(Rabbit());keyAdd(Horse(), true)
-            keyAdd(Wings());keyAdd(Bird(),true)
+            keyAdd(Animal());keyAdd(Rabbit());keyAdd(Deer());keyAdd(Camel());keyAdd(Horse(), true)
+            keyAdd(Wings());keyAdd(Bird());keyAdd((Eagle()),true)
             keyAdd(Fish(),true)
             keyAdd(Frog(),true)  //amphibians...
-            keyAdd(Insect());keyAdd(Spider());keyAdd(Louse(),true);
+            keyAdd(Insect());keyAdd(Butterfly());keyAdd(Spider());keyAdd(Louse(),true);
             keyAdd(Worm(),true)
             keyAdd(Snake(),true)
         }
@@ -3869,21 +4150,23 @@ class SymbolPaths() {
 
         //5 (x)PERSON().PERSONAL_ARTIFACTS()
         with( PERSON().PERSONAL_ARTIFACTS() ) {
-            keyAdd( Brush ());keyAdd( Soap() );keyAdd(Toothbrush(), true) //@@@Added SOAP
+            keyAdd( Comb() );keyAdd( Brush ());keyAdd( Soap() );keyAdd(Toothbrush(), true) //@@@Added SOAP
             keyAdd( Bed());keyAdd( Blanket());keyAdd( Pillow(), true ); //@@@ added Pillow
             keyAdd(Hammer());keyAdd(Knife(), true)
             keyAdd(Tube(), true)
-            keyAdd(Fiber());keyAdd(Thread());keyAdd(Needle());keyAdd(Rope(), true)
+            keyAdd(Fiber());keyAdd(Thread());keyAdd(Cloth());keyAdd(Needle());keyAdd(Rope(), true)
+            //@@@ human artifacts
+            keyAdd(Key());keyAdd(Money(), true);
             //@@@ future Garage Items
             keyAdd(Saw());keyAdd(Shovel(), true)   //Bigger + impersonal  + todo: add Rake
-
         }
 
         //6 (x)PERSON().KITCHEN_TOOLS()
         with ( PERSON().KITCHEN_TOOLS() ) {
-            keyAdd(Container());keyAdd(Dish(), true)
+            keyAdd(Container());keyAdd(Pitcher());keyAdd(Dish(), true)
             keyAdd(Cup());keyAdd(Drinkingglass(), true)
-            keyAdd(Fork());keyAdd(Knife());keyAdd(Spoon())
+            keyAdd(Fork());keyAdd(Knife());keyAdd(Spoon(), true)
+            keyAdd(Pot());keyAdd(Pan(), true)
         }
 
         //=================================NEW SUPERGROUP===============================================================
@@ -3956,8 +4239,21 @@ class SymbolPaths() {
             keyAdd(Yellow())
             keyAdd(Green())
             keyAdd(Blue())
-
         }
+
+        with(CONCEPTS().DIRECTIONS() ) {
+            keyAdd(Right());keyAdd(Left(), true)
+            keyAdd(Up());keyAdd(Down(), true)
+            keyAdd(North());keyAdd(South());keyAdd(BLANK());keyAdd(East());keyAdd(West(), true)
+        }
+
+        with(CONCEPTS().SHAPES() ) {
+            keyAdd(Shape(), true)
+            keyAdd(Line());keyAdd(BLANK());keyAdd(Curve(), true)
+            keyAdd(RoundShape());keyAdd(SquareShape());keyAdd(TriangleShape());keyAdd(DiamondShape(), true);
+            keyAdd(Parallel());keyAdd(Perpendicular(), true);
+        }
+
 
         //=================================NEW SUPERGROUP===============================================================
         //       1"ARTICLES",   2"ADVERBS", 3"VERBS", 4"ADJECTIVES", 5"PREPOSITIONS",  6"PRONOUNS", 7"CONJUNCTIONS", 8"INTERJECTIONS", 9"EMOJIS", 10"PUNCTUATION"
